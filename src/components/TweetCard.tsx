@@ -4,29 +4,27 @@ import { useDrag } from "react-dnd";
 import { Tweet } from "../types";
 import { DraggableTypes } from "../enums";
 import cx from "classnames";
-//import useLocalStorage from "../hooks/useLocalStorage";
 
 type TweetCardProps = {
   tweet: Tweet;
+  remove?: (id: number) => void;
 };
 
-const TweetCard: React.FC<TweetCardProps> = ({ tweet }) => {
-  //const { removeItem } = useLocalStorage("tweet-data");
+const TweetCard: React.FC<TweetCardProps> = ({ tweet, remove }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: DraggableTypes.TWEET,
       item: tweet,
-      end: (item, monitor) => {
-        console.log(item);
-        console.log(monitor.didDrop());
-        console.log(monitor.getDropResult());
-      },
       collect: (monitor: DragSourceMonitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }),
     [tweet.id]
   );
+
+  const handleRemove = () => {
+    remove && remove(tweet.id);
+  };
 
   return (
     <div
@@ -52,6 +50,16 @@ const TweetCard: React.FC<TweetCardProps> = ({ tweet }) => {
             </div>
           </div>
           <div>{tweet.text}</div>
+          {remove && (
+            <div>
+              <label
+                onClick={handleRemove}
+                className="cursor-pointer text-red-400 hover:text-red-600 block text-right"
+              >
+                Remove tweet
+              </label>
+            </div>
+          )}
         </div>
       </div>
     </div>

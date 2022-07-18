@@ -7,21 +7,20 @@ import DropContainer from "./components/DropContainer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import TweetList from "./components/TweetList";
-import useLocalStorage from "./hooks/useLocalStorage";
+import useLocalTweets from "./hooks/useLocalTweets";
 
 const App: React.FC = () => {
   const [tweetQuery, setTweetQuery] = useState<string>("");
-  const { value: savedTweets, saveItem } = useLocalStorage("tweet-data");
-  const { tweets, loading, error } = useTweets({
+  const [localTweets, saveTweet, removeTweet] = useLocalTweets();
+  const { tweets, loading } = useTweets({
     query: tweetQuery,
-    count: 10,
+    count: 15, // if time, make it also as a form input
   });
-  // loading for some small noti
-  console.log(tweets, loading, error);
+
   return (
     <div className="flex flex-col mx-16 mt-16">
       <Hero />
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-x-2 ">
         <DndProvider backend={HTML5Backend}>
           <div className="flex flex-col basis-2/5">
             <SearchForm setSearchQuery={setTweetQuery} loading={loading} />
@@ -39,8 +38,8 @@ const App: React.FC = () => {
               Saved Tweets
             </h2>
             <TweetContainer>
-              <DropContainer handleDrop={saveItem}>
-                <TweetList tweets={savedTweets} />
+              <DropContainer handleDrop={saveTweet}>
+                <TweetList tweets={localTweets} removeTweet={removeTweet} />
               </DropContainer>
             </TweetContainer>
           </div>

@@ -19,13 +19,13 @@ const SearchForm: React.FC<SearchFormProps> = ({ setSearchQuery, loading }) => {
   return (
     <form className="mb-2 flex flex-row" onSubmit={handleSubmit}>
       <input
-        className="rounded w-96 mr-2"
+        className="flex flex-grow-3 rounded mr-2"
         type="text"
         placeholder="Search Twitter"
         ref={queryInputRef}
       />
       <button
-        className="flex flex-row ml-auto items-center w-36 justify-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400 transition ease-in-out duration-150"
+        className="flex w-32 flex-row ml-auto items-center justify-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-blue-500 hover:bg-blue-400 transition ease-in-out duration-150"
         type="submit"
       >
         {loading && (
