@@ -18,7 +18,15 @@ const useTweets = ({ query, count }: UseTweetsProps) => {
     (async () => {
       try {
         setLoading(true);
-        const tweetResponse = await fetch(`/api?q=${query}&count=${count}`);
+        // Since we only have one url like this, I will do it here
+        // But in general it would be better to make local/prod configs
+        const apiUrl =
+          process.env.NODE_ENV === "development"
+            ? `/api`
+            : `https://tweetsaver.herokuapp.com/`;
+        const tweetResponse = await fetch(
+          `${apiUrl}?q=${query}&count=${count}`
+        );
         if (tweetResponse.ok) {
           const tweetJSON = await tweetResponse.json();
           setTweets(tweetJSON.tweets);
